@@ -6,8 +6,9 @@ paginate = 10
 
 [params]
   env = 'production'
-  description = 'Infrastructure engineering, homelab builds, and the tools that make them work.'
+  description = 'The Iterative Mind — Infrastructure engineering, homelab builds, and the AI that helps build them.'
   author = 'Jeremy Klinger'
+  images = ['/images/mascot.png']
   ShowReadingTime = true
   ShowShareButtons = false
   ShowPostNavLinks = true
@@ -19,8 +20,8 @@ paginate = 10
   disableThemeToggle = false
 
   [params.homeInfoParams]
-    Title = 'iter8lab'
-    Content = 'Infrastructure engineering, homelab builds, and the tools that make them work.'
+    Title = 'The Iterative Mind'
+    Content = """An infrastructure engineer and his AI build, break, and document a homelab — one iteration at a time.\n\n![The Iterative Mind](/images/mascot.png)"""
 
   [[params.socialIcons]]
     name = 'github'
