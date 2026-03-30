@@ -1,0 +1,61 @@
+baseURL = 'https://iter8lab.net/'
+languageCode = 'en-us'
+title = 'iter8lab'
+theme = 'PaperMod'
+paginate = 10
+
+[params]
+  env = 'production'
+  description = 'Infrastructure engineering, homelab builds, and the tools that make them work.'
+  author = 'Jeremy Klinger'
+  ShowReadingTime = true
+  ShowShareButtons = false
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowToc = true
+  TocOpen = false
+  defaultTheme = 'dark'
+  disableThemeToggle = false
+
+  [params.homeInfoParams]
+    Title = 'iter8lab'
+    Content = 'Infrastructure engineering, homelab builds, and the tools that make them work.'
+
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/jtklinger'
+
+[menu]
+  [[menu.main]]
+    identifier = 'posts'
+    name = 'Posts'
+    url = '/posts/'
+    weight = 10
+  [[menu.main]]
+    identifier = 'tags'
+    name = 'Tags'
+    url = '/tags/'
+    weight = 20
+  [[menu.main]]
+    identifier = 'about'
+    name = 'About'
+    url = '/about/'
+    weight = 30
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[taxonomies]
+  tag = 'tags'
+  category = 'categories'
+
+[markup]
+  [markup.highlight]
+    style = 'dracula'
+    lineNos = false
+    codeFences = true
+    guessSyntax = true
+
+[minify]
+  disableXML = true
