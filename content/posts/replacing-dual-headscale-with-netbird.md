@@ -5,6 +5,11 @@ draft: false
 tags: ["netbird", "headscale", "tailscale", "vpn", "wireguard", "homelab"]
 categories: ["Infrastructure"]
 summary: "How I replaced two independent Headscale tailnets with a single Netbird mesh VPN, eliminating profile switching and simplifying network access across two domains."
+author: "Jeremy Klinger"
+cover:
+  image: "/images/mascot.png"
+  alt: "iter8lab"
+  relative: false
 ---
 
 ## The Problem
