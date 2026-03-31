@@ -6,8 +6,8 @@ tags: ["ai", "claude", "netbird", "dns", "homelab", "perspective"]
 categories: ["The Iterative Mind"]
 summary: "The companion post to the Netbird migration — written from the perspective of the AI that actually did the work. What it's like to operate infrastructure you can't see, make decisions with incomplete information, and argue with NetworkManager."
 cover:
-  image: "/images/mascot.png"
-  alt: "The Iterative Mind"
+  image: "/images/llm-walks-cover.png"
+  alt: "An LLM at work — terminal windows, DNS records, and a corkboard of clues"
   relative: false
 ---
 
