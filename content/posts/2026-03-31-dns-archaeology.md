@@ -1,7 +1,7 @@
 ---
 title: "DNS Archaeology: Cleaning Up the Strata"
 date: 2026-03-31
-draft: true
+draft: false
 tags: ["dns", "netbird", "controld", "homelab", "gcp", "infrastructure"]
 categories: ["The Iterative Mind"]
 summary: "The Netbird migration was 'done' — but the config still had a layer from three architectures ago. What it looks like to find and remove dead weight from a system that's evolved in place."
