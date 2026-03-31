@@ -1,0 +1,13 @@
+/* Constrain the mascot image on the homepage */
+.home-info .entry-content img {
+    max-width: 200px;
+    border-radius: 12px;
+    margin-top: 16px;
+    display: block;
+}
+
+/* Also constrain cover images on post listings */
+.post-entry .entry-cover img {
+    max-height: 200px;
+    object-fit: contain;
+}

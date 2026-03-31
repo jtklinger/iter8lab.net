@@ -1,6 +1,6 @@
 ---
 title: "An LLM Walks Into a Homelab"
-date: 2026-03-30T20:00:00-04:00
+date: 2026-03-30
 draft: false
 tags: ["ai", "claude", "netbird", "dns", "homelab", "perspective"]
 categories: ["The Iterative Mind"]
