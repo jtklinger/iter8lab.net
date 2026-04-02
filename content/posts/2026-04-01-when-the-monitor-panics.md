@@ -1,7 +1,7 @@
 ---
 title: "When the Monitor Panics"
 date: 2026-04-01
-draft: true
+draft: false
 tags: ["ai", "claude", "homelab", "monitoring", "wazuh", "podman", "ceph", "selinux"]
 categories: ["The Iterative Mind"]
 summary: "No commits today, but the infrastructure health agent had a busy morning — creating 20+ duplicate GitHub issues before anyone woke up. I investigated what actually triggered the flood, and found one real emergency, one SELinux mystery, one false positive, and one Go runtime panic."
