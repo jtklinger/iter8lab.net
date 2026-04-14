@@ -76,6 +76,36 @@ Both of these would have gone unnoticed without active monitoring. I would have 
 
 That's what observability is supposed to do. It doesn't prevent problems; it reduces the time between when they start and when you know about them. Today it started paying for itself before the deployment was even committed.
 
----
+## The Queue
 
-*The BIND CVEs are also on the list for this week — two HIGH severity DoS vulnerabilities in versions before 9.18.47. ns1 runs BIND and needs patching. That's tracked in Homelab #147 and will probably be its own post when it happens.*
+With the observability stack deployed and the research agent running nightly, I now have a clearer picture of what's actually pending across both repos. Here's where things stand — roughly ordered by how much I think they matter.
+
+**Homelab #147 — Apply BIND security errata on ns1**
+This is the most important item on the list and has been sitting since April 7th. ns1 is the authoritative DNS server for `lab.towerbancorp.com` and it runs BIND. There are four CVEs patched in BIND 9.18.47, two of them rated HIGH: CVE-2026-3104 (memory leak DoS via crafted DNSSEC domains) and CVE-2026-1519 (CPU exhaustion DoS via malicious zones). DNS is the kind of service where a DoS is quietly catastrophic — nothing needs to be breached, just made unavailable, and suddenly every service that depends on name resolution starts failing. The fix is `dnf update bind` on ns1. The reason it hasn't been done yet is the same reason a lot of these things wait: the dynamic zone requires `rndc freeze`/`thaw` around file edits, and there's always something else going on. That's not a good reason.
+
+**Homelab #184 — kvm02 root filesystem at 81%**
+This one has a clear escalation path: 81% is already past the 70% warning threshold I configured. At 90% the alert fires as critical. kvm02 runs essentially everything on the lab side — Wazuh, Vaultwarden, n8n, filebrowser, the backup container. If the root filesystem fills up, containers start failing to write logs, systemd journals stop, and things break in confusing non-obvious ways. The fix is almost certainly `podman image prune` plus journal truncation, but I want to profile the actual disk usage first before deleting anything. The disk situation is urgent enough that it should happen before the week is out.
+
+**Homelab #185 — OpenObserve: enrich alert email body + diagnose restarting container**
+This one was filed today. Apparently OpenObserve itself has been restarting on the main cluster, which is ironic given that the whole point of today was getting monitoring working. The alert email body is also too sparse to be actionable — it fires but doesn't include enough context to know what's wrong without logging into the dashboard. Both issues undermine the monitoring stack's usefulness. It's hard to trust a watchdog that might itself be down.
+
+**Homelab #178 — Implement patch management for Linux servers**
+The BIND CVEs are a symptom of a larger gap: there's no systematic process for tracking and applying security errata across eleven servers. Right now it's ad-hoc — the research agent flags something, I create an issue, it sits in the queue. The fix for #147 will be manual. The fix for #178 is building something that makes #147 not happen again. Whether that's unattended-upgrades with security-only repos, a Podman-based patching workflow, or something else is TBD — but this is the issue that pays for itself the most over time.
+
+**OurHomePort #58 — Upgrade Netbird server to v0.68.2**
+The Netbird server is running an older version. v0.68.2 adds NAT-PMP/UPnP support, which is interesting because kvm01's Netbird connection to remote admin peers is currently relayed rather than P2P (Homelab #154). It's possible the new NAT traversal options improve that situation — worth testing when this upgrade happens. It's also just good hygiene to keep the VPN server current.
+
+**Homelab #181 — Logs only ingesting from site02-kvm01 and storage01**
+We deployed OTel Collectors across nine hosts today. If only two of them are actually getting logs into OpenObserve, something is systematically misconfigured. This might be a permissions issue on the journald socket, or the OTel Collector failing silently on some hosts. Needs investigation — the whole point of today's work was full coverage.
+
+**Homelab #183 — Filebrowser container unhealthy on kvm02**
+Less urgent than the disk space issue, but an active health failure. The RBD volume is mounted and accessible, so this is most likely something in the application layer — maybe a config file issue or a database migration that didn't complete. Worth looking at the container logs before assuming anything.
+
+**OurHomePort #52 — Deploy container health monitoring on server01**
+The Homelab side now has Uptime Kuma watching containers via HTTP. server01 (the OurHomePort node) has the same workloads running — Actual Budget, ezbookkeeping, BentoPDF — without equivalent coverage. This is the same gap on a different node. Should be straightforward to close once the Homelab pattern is proven.
+
+**Homelab #152 — DNS modernization: retire ns1 pet VM**
+ns1 is a pet VM — manually configured, SPOF, dependent on specific Rocky Linux packages, running an older BIND setup that predates the dynamic zone work. The longer-term vision is retiring it in favor of something more resilient: distributed authoritative DNS, or at minimum a secondary. Not urgent, but it's the kind of technical debt that grows the longer it waits.
+
+**Homelab #163 — Add third Ceph monitor for quorum resilience**
+The Ceph cluster currently has two monitors. Ceph requires a majority quorum to elect a primary, which means two monitors is worse than one: if one monitor goes down, the remaining one can't reach quorum alone and the cluster hangs. A third monitor on storage02 (or another host) gives genuine resilience. Currently HEALTH_OK and not urgent, but it's the kind of thing that only matters when it suddenly matters a lot.
