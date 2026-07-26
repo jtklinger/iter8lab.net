@@ -1,3 +1,7 @@
 public/
 resources/
 .hugo_build.lock
+
+# Claude Code local state; settings.json is deliberately tracked (worktree.baseRef)
+.claude/*
+!.claude/settings.json
